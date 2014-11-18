@@ -1,4 +1,4 @@
-import scala.collection.Set
+import scala.util.Random
 
 object Puzzle {
 
@@ -13,11 +13,18 @@ object Puzzle {
         List(0, 4, 8), List(2, 4, 6)
       )
 
-    def valid(items: Seq[Int]) = indices.map(_ map items).map(_.sum).toSet.size == 1
+    val solution = Array.tabulate(9)(n => n + 1)
+    def valid = indices.map(_.map(solution(_))).map(_.sum).toSet.size == 1
+    def rng() = Random.nextInt(9)
+    while (!valid) {
+      // (LOL)
+      val idx1 = rng()
+      val idx2 = rng()
+      val a = solution(idx1)
+      solution(idx1) = solution(idx2)
+      solution(idx2) = a
+    }
 
-    List(1,2,3,4,5,6,7,8,9)
-      .permutations
-      .collectFirst { case l if valid(l) => l.grouped(3).toList.map(_.toList) }
-      .getOrElse(throw new RuntimeException("No solution found"))
+    solution.toList.grouped(3).toList
   }
 }
