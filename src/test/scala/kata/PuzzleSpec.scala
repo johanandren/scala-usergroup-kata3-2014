@@ -25,13 +25,13 @@ class PuzzleSpec extends Specification {
           // horizontal
           List(0, 1, 2), List(3, 4, 5), List(6, 7, 8),
           // vertical
-          List(0, 3, 6), List(1, 4, 7), List(2, 5, 9),
+          List(0, 3, 6), List(1, 4, 7), List(2, 5, 8),
           // diagonal
-          List(0, 4, 9), List(2, 4, 6)
+          List(0, 4, 8), List(2, 4, 6)
         )
 
       val flatResult = result.flatten
-      val allSums = indices map (_ map (flatResult(_)))
+      val allSums: List[Int] = indices map (_ map (flatResult(_))) map (_.sum)
 
       allSums.toSet must haveSize (1)
     }
