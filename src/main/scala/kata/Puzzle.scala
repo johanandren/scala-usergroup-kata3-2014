@@ -13,20 +13,11 @@ object Puzzle {
         List(0, 4, 8), List(2, 4, 6)
       )
 
-    def loop(left: Set[Int], matrix: List[Int]): Option[List[Int]] =
-      if (left.isEmpty) {
-        if (valid(matrix)) Some(matrix)
-        else None
-      } else {
-        left.view
-          .map(n => loop(left - n, n :: matrix))
-          .collectFirst { case Some(sol) => sol }
-      }
+    def valid(items: Seq[Int]) = indices.map(_ map items).map(_.sum).toSet.size == 1
 
-    def valid(items: List[Int]) = indices.map(_ map items).map(_.sum).toSet.size == 1
-
-    loop(Set(1,2,3,4,5,6,7,8,9), List[Int]())
-      .map(_.grouped(3).toList)
+    List(1,2,3,4,5,6,7,8,9)
+      .permutations
+      .collectFirst { case l if valid(l) => l.grouped(3).toList.map(_.toList) }
       .getOrElse(throw new RuntimeException("No solution found"))
   }
 }
